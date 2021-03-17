@@ -36,14 +36,18 @@
 
 
   function initActions(){
-    const linksWithImages = document.querySelectorAll(select.container.bookImage);
-    for (let linkWithImage of linksWithImages){
-      linkWithImage.addEventListener('dblclick',function(){
+    //select whole UL
+    const listOfLinksWithImages = document.querySelector(select.container.bookList);
+    listOfLinksWithImages.addEventListener('dblclick',function(event){
+      event.preventDefault();
+      //if parent of target img is a
+      if (event.target.offsetParent.classList.contains('book__image')){
+        const linkWithImage = event.target.offsetParent;
         const bookID = linkWithImage.getAttribute(select.book.id);
         if (favoriteBooks.includes(bookID)){
           linkWithImage.classList.remove(select.book.f);
-          for (var i=0;i<favoriteBooks.length;i++){
-            if (favoriteBooks[i]===bookID){
+          for (var i = 0;i < favoriteBooks.length;i++){
+            if (favoriteBooks[i] === bookID){
               favoriteBooks.splice(i,1);
             }
           }
@@ -51,8 +55,8 @@
           favoriteBooks.push(bookID);
           linkWithImage.classList.add(select.book.f);
         }
-      });
-    }
+      }
+    });
   }
 
 
