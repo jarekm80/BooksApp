@@ -8,7 +8,8 @@
     },
     container: {
       bookList: '.books-list',
-      bookImage: '.book__image'
+      bookImage: '.book__image',
+      filters: '.filters',
     },
     book: {
       id: 'data-id',
@@ -21,6 +22,7 @@
   };
 
   const favoriteBooks = [];
+  const filters = [];
 
   function render(){
     for (let book of dataSource.books){
@@ -36,6 +38,23 @@
 
 
   function initActions(){
+    const filtersForm = document.querySelector(select.container.filters).querySelector('form');
+    filtersForm.addEventListener('click',function(event){
+      //event.preventDefault();
+      const checkBox = event.target;
+      if (checkBox.tagName === 'INPUT' && checkBox.type === 'checkbox' && checkBox.name === 'filter'){
+        if (checkBox.checked && !filters.includes(checkBox.value)){
+          filters.push(checkBox.value);
+        } else if (!checkBox.checked && filters.includes(checkBox.value)){
+          const index = filters.indexOf(checkBox.value);
+          filters.splice(index,1);
+        }
+        
+      }
+      console.log(filters);
+
+    }); 
+
     //select whole UL
     const listOfLinksWithImages = document.querySelector(select.container.bookList);
     listOfLinksWithImages.addEventListener('dblclick',function(event){
