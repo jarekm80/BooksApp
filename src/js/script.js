@@ -24,8 +24,24 @@
   const favoriteBooks = [];
   const filters = [];
 
+  function setBack(Rating){
+    let background = '';
+    if (Rating < 6) {
+      background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%);';
+    } else if (Rating > 6 && Rating <= 8) {
+      background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+    } else if (Rating > 8 && Rating <= 9) {
+      background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%);';
+    } else {
+      background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%);';
+    }
+    return background;
+  }
+
   function render(){
     for (let book of dataSource.books){
+      book.ratingWidth = book.rating * 10;
+      book.ratingBgc = setBack(book.rating);
       const generatedHTML = templates.bookTemp(book);
       /* [DONE] create element using utils.createElementFromHTML */
       const DOMelement = utils.createDOMFromHTML(generatedHTML);
@@ -36,6 +52,7 @@
     }
   }
 
+  // patent na uproszczenie ?????
   function isFiltered(book){
     let filtered = false;
     const adultsChecked = filters.indexOf('adults') !== -1;
