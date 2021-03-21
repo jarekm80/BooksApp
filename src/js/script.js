@@ -36,11 +36,44 @@
     }
   }
 
+  function isFiltered(book){
+    let filtered = false;
+    const adultsChecked = filters.indexOf('adults') !== -1;
+    const nonFictionChecked = filters.indexOf('nonFiction') !== -1;
+    if ((adultsChecked && book.details.adults) || (nonFictionChecked && book.details.nonFiction)){
+      filtered = true;
+    } 
+    if (adultsChecked && nonFictionChecked) {
+      if (book.details.adults && book.details.nonFiction) {
+        filtered = true;
+      } else {
+        filtered = false;
+      } 
+    }
+    if (!adultsChecked && !nonFictionChecked){
+      filtered = true;
+    }
+    return filtered;
+  }
+
+  function filterBooks(){
+    for (let book of dataSource.books){
+      if (!isFiltered(book)){
+        let domBook = document.querySelector('[data-id=' + CSS.escape(book.id) + ']');
+        domBook.classList.add('hidden');
+      } else {
+        let domBook = document.querySelector('[data-id=' + CSS.escape(book.id) + ']');
+        domBook.classList.remove('hidden');
+      }
+    }
+    
+  }
+
 
   function initActions(){
     const filtersForm = document.querySelector(select.container.filters).querySelector('form');
     filtersForm.addEventListener('click',function(event){
-      //event.preventDefault();
+      //event.preventDefault(); ?????
       const checkBox = event.target;
       if (checkBox.tagName === 'INPUT' && checkBox.type === 'checkbox' && checkBox.name === 'filter'){
         if (checkBox.checked && !filters.includes(checkBox.value)){
@@ -49,10 +82,8 @@
           const index = filters.indexOf(checkBox.value);
           filters.splice(index,1);
         }
-        
       }
-      console.log(filters);
-
+      filterBooks();
     }); 
 
     //select whole UL
